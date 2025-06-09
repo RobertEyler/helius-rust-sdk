@@ -48,7 +48,7 @@ impl Helius {
         instructions: Vec<Instruction>,
         payer: Pubkey,
         lookup_tables: Vec<AddressLookupTableAccount>,
-        signers: Option<&[Arc<dyn Signer>]>,
+        signers: Option<&[Arc<dyn Signer + Send + Sync>]>,
     ) -> Result<Option<u64>> {
         // Set the compute budget limit
         let test_instructions: Vec<Instruction> = vec![ComputeBudgetInstruction::set_compute_unit_limit(1_400_000)]
