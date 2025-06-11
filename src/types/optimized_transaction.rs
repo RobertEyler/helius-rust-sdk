@@ -712,7 +712,7 @@ impl Helius {
         config: &CreateSmartTransactionConfig,
     ) -> Result<(SmartTransaction, u64)> {
         // The payer must be provided
-        let fee_payer: &Arc<Keypair> = config.fee_payer.as_ref().ok_or_else(|| {
+        let fee_payer: &Arc<Pairkey + Send + Sync> = config.fee_payer.as_ref().ok_or_else(|| {
             HeliusError::InvalidInput("Fee payer must be provided for unsigned transactions".to_string())
         })?;
         let payer_pubkey: Pubkey = fee_payer.pubkey();

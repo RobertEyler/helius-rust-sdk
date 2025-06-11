@@ -10,7 +10,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use solana_client::rpc_config::RpcSendTransactionConfig;
-use solana_sdk::{address_lookup_table::AddressLookupTableAccount, instruction::Instruction, signature::Signer};
+use solana_sdk::{address_lookup_table::AddressLookupTableAccount, instruction::Instruction, signature::Keypair};
 
 /// Defines the available clusters supported by Helius
 #[derive(Debug, Clone, PartialEq)]
@@ -904,14 +904,14 @@ pub struct EditWebhookRequest {
 
 pub struct CreateSmartTransactionConfig {
     pub instructions: Vec<Instruction>,
-    pub signers: Vec<Arc<dyn Signer + Send + Sync>>,
+    pub signers: Vec<Arc<Keypair>>,
     pub lookup_tables: Option<Vec<AddressLookupTableAccount>>,
-    pub fee_payer: Option<Arc<dyn Signer + Send + Sync>>,
+    pub fee_payer: Option<Arc<Keypair>>,
     pub priority_fee_cap: Option<u64>,
 }
 
 impl CreateSmartTransactionConfig {
-    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<dyn Signer + Send + Sync>>) -> Self {
+    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<Keypair>>) -> Self {
         Self {
             instructions,
             signers,
@@ -947,7 +947,7 @@ pub struct SmartTransactionConfig {
 }
 
 impl SmartTransactionConfig {
-    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<dyn Signer + Send + Sync>>, timeout: Timeout) -> Self {
+    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<Keypair>>, timeout: Timeout) -> Self {
         Self {
             create_config: CreateSmartTransactionConfig::new(instructions, signers),
             send_options: RpcSendTransactionConfig::default(),
