@@ -947,7 +947,7 @@ pub struct SmartTransactionConfig {
 }
 
 impl SmartTransactionConfig {
-    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<dyn Signer>>, timeout: Timeout) -> Self {
+    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<dyn Signer + Send + Sync>>, timeout: Timeout) -> Self {
         Self {
             create_config: CreateSmartTransactionConfig::new(instructions, signers),
             send_options: RpcSendTransactionConfig::default(),

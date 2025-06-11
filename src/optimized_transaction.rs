@@ -181,7 +181,7 @@ impl Helius {
                 v0::Message::try_compile(&payer_pubkey, &config.instructions, lookup_tables, recent_blockhash)?;
             let versioned_message: VersionedMessage = VersionedMessage::V0(v0_message);
 
-            let all_signers: Vec<Arc<dyn Signer>> = if let Some(fee_payer) = &config.fee_payer {
+            let all_signers: Vec<Arc<dyn Signer + Send + Sync>> = if let Some(fee_payer) = &config.fee_payer {
                 let mut all_signers = config.signers.clone();
                 if !all_signers.iter().any(|signer| signer.pubkey() == fee_payer.pubkey()) {
                     all_signers.push(fee_payer.clone());
@@ -297,7 +297,7 @@ impl Helius {
                 v0::Message::try_compile(&payer_pubkey, &final_instructions, lookup_tables, recent_blockhash)?;
             let versioned_message: VersionedMessage = VersionedMessage::V0(v0_message);
 
-            let all_signers: Vec<Arc<dyn Signer>> = if let Some(fee_payer) = config.fee_payer.as_ref() {
+            let all_signers: Vec<Arc<dyn Signer + Send + Sync>> = if let Some(fee_payer) = config.fee_payer.as_ref() {
                 let mut all_signers = config.signers.clone();
                 if !all_signers.iter().any(|signer| signer.pubkey() == fee_payer.pubkey()) {
                     all_signers.push(fee_payer.clone());
@@ -712,7 +712,7 @@ impl Helius {
         config: &CreateSmartTransactionConfig,
     ) -> Result<(SmartTransaction, u64)> {
         // The payer must be provided
-        let fee_payer: &Arc<dyn Signer> = config.fee_payer.as_ref().ok_or_else(|| {
+        let fee_payer: &Arc<dyn Signer + Send + Sync> = config.fee_payer.as_ref().ok_or_else(|| {
             HeliusError::InvalidInput("Fee payer must be provided for unsigned transactions".to_string())
         })?;
         let payer_pubkey: Pubkey = fee_payer.pubkey();
