@@ -904,14 +904,14 @@ pub struct EditWebhookRequest {
 
 pub struct CreateSmartTransactionConfig {
     pub instructions: Vec<Instruction>,
-    pub signers: Vec<Arc<dyn Signer>>,
+    pub signers: Vec<Arc<dyn Signer + Send + Sync>>,
     pub lookup_tables: Option<Vec<AddressLookupTableAccount>>,
-    pub fee_payer: Option<Arc<dyn Signer>>,
+    pub fee_payer: Option<Arc<dyn Signer + Send + Sync>>,
     pub priority_fee_cap: Option<u64>,
 }
 
 impl CreateSmartTransactionConfig {
-    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<dyn Signer>>) -> Self {
+    pub fn new(instructions: Vec<Instruction>, signers: Vec<Arc<dyn Signer + Send + Sync>>) -> Self {
         Self {
             instructions,
             signers,
