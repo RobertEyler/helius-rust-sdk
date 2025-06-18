@@ -169,7 +169,7 @@ pub enum PriorityLevel {
     UnsafeMax,
     Default,
 }
-
+#[serde(rename_all = "camelCase")] 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UiTransactionEncoding {
     Binary,
